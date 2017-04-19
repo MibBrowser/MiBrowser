@@ -11,6 +11,13 @@ package DAO;
  */
 public class MIBRepository {
     
-    public Connection connection 
+    public Connection connection;
     
+    public MIBRepository(Connection con) {
+        this.connection = con;
+    }
+    
+    public String getInformation(String oid) {
+        return "";
+    }
 }
