@@ -20,7 +20,7 @@ public class main {
         MIBRepository mibr = new MIBRepository(con);
         ResponseEvent response = null;
         try {
-            response = mibr.getInformation(".1.3.6.1.2.1.1.1.0");
+            response = mibr.getInformation(".1.3.6.1.2.1.2.1.0");
         } catch (IOException ex) {
             System.out.println("Deu erro amigo, belê?" + ex.getMessage());
         }

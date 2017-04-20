@@ -35,11 +35,11 @@ public class MIBRepository {
         CommunityTarget comtarget = this.connection.open();
         // Create Snmp object for sending data to Agent
         Snmp snmp = new Snmp(this.connection.getTransport());
-        
+
         ResponseEvent re = snmp.get(pdu, comtarget);
-        
+
         snmp.close();
-        
+
         return re;
-    }    
+    }
 }
