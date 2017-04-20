@@ -50,10 +50,6 @@ public class Connection {
         return comtarget;
     }
 
-    public void close() {
-
-    }
-
     /**
      * @return the ip
      */

@@ -26,7 +26,7 @@ public class MIBRepository {
         this.connection = con;
     }
 
-    public String getInformation(String oid) throws IOException {
+    public ResponseEvent getInformation(String oid) throws IOException {
         PDU pdu = new PDU();
         pdu.add(new VariableBinding(new OID(oid)));
         pdu.setType(PDU.GET);
@@ -35,8 +35,11 @@ public class MIBRepository {
         CommunityTarget comtarget = this.connection.open();
         // Create Snmp object for sending data to Agent
         Snmp snmp = new Snmp(this.connection.getTransport());
-        ResponseEvent response = snmp.get(pdu, comtarget);
         
-        return "";
-    }
+        ResponseEvent re = snmp.get(pdu, comtarget);
+        
+        snmp.close();
+        
+        return re;
+    }    
 }
