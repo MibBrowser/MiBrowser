@@ -14,6 +14,7 @@ import org.snmp4j.Snmp;
 import org.snmp4j.event.ResponseEvent;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
+import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.VariableBinding;
 
 /**
@@ -65,7 +66,13 @@ public class MIBRepository {
                     Vector<? extends VariableBinding> variableBindings = responsePDU.getVariableBindings();
                     String[] responseBinding = new String[variableBindings.size()];
                     for (int i = 0; i < variableBindings.size(); i++) {
-                        responseBinding[i] = variableBindings.elementAt(i).toValueString();
+                        VariableBinding value = variableBindings.elementAt(i);
+                        if (value.getVariable() instanceof OctetString) {
+                            OctetString octetString = (OctetString) value.getVariable();
+                            responseBinding[i] = octetString.toASCII(':');
+                        } else {
+                            responseBinding[i] = variableBindings.elementAt(i).toValueString();
+                        }
                     }
                     return responseBinding;
                 } else {
