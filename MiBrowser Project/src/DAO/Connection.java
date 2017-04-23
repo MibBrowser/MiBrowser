@@ -48,7 +48,7 @@ public class Connection {
         comtarget.setRetries(this.retransmission);
         comtarget.setTimeout(this.timeout);
         return comtarget;
-    }
+    }   
 
     /**
      * @return the ip

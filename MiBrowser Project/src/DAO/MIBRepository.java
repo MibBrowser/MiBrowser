@@ -6,6 +6,8 @@
 package DAO;
 
 import java.io.IOException;
+import java.util.Vector;
+import java.util.concurrent.TimeoutException;
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
@@ -26,20 +28,54 @@ public class MIBRepository {
         this.connection = con;
     }
 
-    public ResponseEvent getInformation(String oid) throws IOException {
+    public String[] getInformation(String[] OIDs) throws IOException, TimeoutException {
+        PDU pdu = new PDU();
+        for (int i = 0; i < OIDs.length; i++) {
+            pdu.add(new VariableBinding(new OID(OIDs[i])));
+        }
+        pdu.setType(PDU.GET);
+        pdu.setRequestID(new Integer32(1));
+        return this.callSnmp(pdu);
+    }
+
+    public String getInformation(String oid) throws IOException, TimeoutException {
         PDU pdu = new PDU();
         pdu.add(new VariableBinding(new OID(oid)));
         pdu.setType(PDU.GET);
         pdu.setRequestID(new Integer32(1));
+        return this.callSnmp(pdu)[0];
+    }
 
+    private String[] callSnmp(PDU pdu) throws IOException, TimeoutException {
         CommunityTarget comtarget = this.connection.open();
         // Create Snmp object for sending data to Agent
         Snmp snmp = new Snmp(this.connection.getTransport());
 
-        ResponseEvent re = snmp.get(pdu, comtarget);
+        ResponseEvent response = snmp.get(pdu, comtarget);
 
         snmp.close();
 
-        return re;
+        if (response != null) {
+            PDU responsePDU = response.getResponse();
+
+            if (responsePDU != null) {
+                int errorStatus = responsePDU.getErrorStatus();
+
+                if (errorStatus == PDU.noError) {
+                    Vector<? extends VariableBinding> variableBindings = responsePDU.getVariableBindings();
+                    String[] responseBinding = new String[variableBindings.size()];
+                    for (int i = 0; i < variableBindings.size(); i++) {
+                        responseBinding[i] = variableBindings.elementAt(i).toValueString();
+                    }
+                    return responseBinding;
+                } else {
+                    throw new IOException("Error: Request Failed");
+                }
+            } else {
+                throw new NullPointerException("Error: Response PDU is null");
+            }
+        } else {
+            throw new TimeoutException("Error: Agent Timeout... ");
+        }
     }
 }
