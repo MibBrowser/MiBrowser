@@ -1,2 +1,3 @@
 # MiBrowser
-MibBrowser for Windows.
+
+MIB browser based in SNMP Protocol.
