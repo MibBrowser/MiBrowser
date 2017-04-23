@@ -17,7 +17,6 @@ import java.util.concurrent.TimeoutException;
 public class Interface {
 
     private Connection connection;
-
     private MIBRepository repository;
 
     private String index;

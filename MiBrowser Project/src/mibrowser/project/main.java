@@ -4,7 +4,6 @@ import org.snmp4j.mp.SnmpConstants;
 import DAO.Connection;
 import Domain.Hardware;
 import Domain.Interface;
-import Domain.Message;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -17,8 +16,8 @@ public class main {
     public static void main(String[] args) {
         Connection con = new Connection("127.0.0.1", 161, "abcBolinhas", SnmpConstants.version2c, 1000, 3);
         try {
-            Message m = new Message(con);
-            Interface[] i = m.getInterfaces();
+            Hardware h = new Hardware(con);
+            Interface[] i = h.getInterfaces();
             System.out.println(i.length);
             System.out.println(i[4].getDescription());
         } catch (IOException ex) {
