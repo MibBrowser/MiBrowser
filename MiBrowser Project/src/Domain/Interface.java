@@ -22,7 +22,7 @@ public class Interface {
     private String index;
     private String description;
     private String type;
-    private String speed;
+    private long speed;
     private String MACAddress;
     private String AdminStatus;
     private String OperationalStatus;
@@ -44,7 +44,7 @@ public class Interface {
 
         this.description = results[0];
         this.type = results[1];
-        this.speed = results[2];
+        this.speed = Long.parseLong(results[2]);
         this.MACAddress = results[3];
         this.AdminStatus = results[4];
         this.OperationalStatus = results[5];
@@ -74,12 +74,8 @@ public class Interface {
         this.type = type;
     }
 
-    public String getSpeed() {
+    public long getSpeed() {
         return speed;
-    }
-
-    public void setSpeed(String speed) {
-        this.speed = speed;
     }
 
     public String getMACAddress() {

@@ -67,7 +67,7 @@ public class MIBRepository {
                     String[] responseBinding = new String[variableBindings.size()];
                     for (int i = 0; i < variableBindings.size(); i++) {
                         VariableBinding value = variableBindings.elementAt(i);
-                        if (value.getVariable() instanceof OctetString) {
+                        if (this.isToConvertOctet(value)) {
                             OctetString octetString = (OctetString) value.getVariable();
                             responseBinding[i] = octetString.toASCII(':');
                         } else {
@@ -84,5 +84,10 @@ public class MIBRepository {
         } else {
             throw new TimeoutException("Error: Agent Timeout... ");
         }
+    }
+
+    public boolean isToConvertOctet(VariableBinding value) {
+        return value.getVariable() instanceof OctetString && 
+                !value.getOid().toString().contains("1.3.6.1.2.1.2.2.1.6."); // MAC Address
     }
 }
