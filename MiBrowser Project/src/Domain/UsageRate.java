@@ -12,14 +12,20 @@ package Domain;
 public class UsageRate {
 
     private double valor;
+    private Octet lastRead;
 
-    public UsageRate(Octet lastRead, Octet compareRead, long speed) {
-        long totalBytes = this.calcTotalBytes(lastRead, compareRead);
-        long totalBytesPerSecond = this.calcTotalBytesPerSecond(totalBytes, lastRead, compareRead);
-        long totalBitsPerSecond = this.calcTotalBitsPerSecond(totalBytesPerSecond);
-        this.valor = (double) totalBitsPerSecond / speed;
+    public UsageRate(Octet lastRead, Octet compareRead, double speed) {
+        double totalBytes = this.calcTotalBytes(lastRead, compareRead);
+        double totalBytesPerSecond = this.calcTotalBytesPerSecond(totalBytes, lastRead, compareRead);
+        double totalBitsPerSecond = this.calcTotalBitsPerSecond(totalBytesPerSecond);
+        this.lastRead = lastRead;
+        this.valor = totalBitsPerSecond / speed;
     }
-    
+
+    public UsageRate(Octet lastRead, double speed) {
+        this(lastRead, new Octet(), speed);
+    }
+
     public double getValor() {
         return valor;
     }
@@ -28,15 +34,19 @@ public class UsageRate {
         this.valor = valor;
     }
 
-    private long calcTotalBytes(Octet lastRead, Octet compareRead) {
+    private double calcTotalBytes(Octet lastRead, Octet compareRead) {
         return (lastRead.getIn() - compareRead.getIn()) + (lastRead.getOut() - compareRead.getOut());
     }
 
-    private long calcTotalBytesPerSecond(long totalBytes, Octet lastRead, Octet compareRead) {
+    private double calcTotalBytesPerSecond(double totalBytes, Octet lastRead, Octet compareRead) {
         return totalBytes / (lastRead.getTime() - compareRead.getTime());
     }
 
-    private long calcTotalBitsPerSecond(long totalBytesPerSecond) {
+    private double calcTotalBitsPerSecond(double totalBytesPerSecond) {
         return totalBytesPerSecond * 8;
+    }
+
+    public Octet getLastRead() {
+        return lastRead;
     }
 }

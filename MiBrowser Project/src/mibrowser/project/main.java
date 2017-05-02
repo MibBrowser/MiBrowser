@@ -5,6 +5,7 @@ import DAO.Connection;
 import Domain.Hardware;
 import Domain.Interface;
 import Domain.UsageRate;
+import Domain.Package;
 import Presentation.Services.UsageRateService;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -20,9 +21,12 @@ public class main {
         try {
             Hardware h = new Hardware(con);
             Interface[] i = h.getInterfaces();
-            UsageRateService service = new UsageRateService(con, i[8]);
-            UsageRate rate = service.readUsageRate();
-            System.out.println("Rate: " + rate.getValor());
+            UsageRateService service = new UsageRateService(con, i[5]);
+            for (int j = 0; j < 100; j++) {
+                UsageRate rate = service.readUsageRate();
+                System.out.println("Rate: " + rate.getValor());
+                Thread.sleep(3000);
+            }
 
         } catch (IOException ex) {
             System.out.println("erro de conexão");

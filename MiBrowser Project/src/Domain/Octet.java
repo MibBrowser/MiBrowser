@@ -11,15 +11,11 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
-/**
- *
- * @author guitv
- */
 public class Octet {
 
-    private long in;
-    private long out;
-    private long time;
+    private double in;
+    private double out;
+    private double time;
 
     public Octet(Connection con, Interface iface) throws IOException, TimeoutException {
         MIBRepository repository = new MIBRepository(con);
@@ -34,7 +30,13 @@ public class Octet {
         this.out = Long.parseLong(results[1]);
     }
    
-    public long getIn() {
+    public Octet() {
+        this.in = 0;
+        this.out = 0;
+        this.time = 0;
+    }
+    
+    public double getIn() {
         return in;
     }
 
@@ -42,7 +44,7 @@ public class Octet {
         this.in = in;
     }
 
-    public long getOut() {
+    public double getOut() {
         return out;
     }
 
@@ -50,7 +52,7 @@ public class Octet {
         this.out = out;
     }
 
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 }
