@@ -6,8 +6,14 @@
 package Presentation;
 
 import DAO.Connection;
+import Domain.Hardware;
+import Domain.Interface;
 import Presentation.Components.Chart;
 import Presentation.Services.UsageRateService;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.snmp4j.mp.SnmpConstants;
 
 /**
@@ -142,11 +148,17 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     private void connect() {
-        this.con = new Connection("127.0.0.1", 161, "abcBolinhas", SnmpConstants.version2c, 1000, 3);
-        // Hardware h = new Hardware(con);
-        //Interface[] i = h.getInterfaces();
-        usageRateService = new UsageRateService(con, null);
-        usageRateService.start(new Chart(this.chartPanel), 3000);
+        try {
+            this.con = new Connection("127.0.0.1", 161, "abcBolinhas", SnmpConstants.version2c, 1000, 3);
+            Hardware h = new Hardware(con);
+            Interface[] i = h.getInterfaces();
+            usageRateService = new UsageRateService(con, i[5]);
+            usageRateService.start(new Chart(this.chartPanel), 3000);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeoutException ex) {
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

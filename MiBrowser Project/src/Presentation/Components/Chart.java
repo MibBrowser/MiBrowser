@@ -8,7 +8,9 @@ package Presentation.Components;
 import Domain.UsageRate;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
@@ -61,17 +63,22 @@ public class Chart {
     }
 
     public void addData(UsageRate data) {
+        if (this.series.getItemCount() > 5) {
+            this.series.clear();
+            this.dates.clear();
+            this.series = new XYSeries("Goals Scored");
+            this.dataSet.removeSeries(this.series.getKey());
+            this.count = 0;
+        }
         // update X axis
-        this.dates.add("Time " + (this.count + 1));
+        Date date = new Date(Math.round(data.getLastRead().getTime()));
+        this.dates.add(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date));
         String[] array = this.dates.toArray(new String[0]);
         SymbolAxis rangeAxis = new SymbolAxis("Datas", array);
-        rangeAxis.setTickUnit(new NumberTickUnit(1));
+        rangeAxis.setTickUnit(new NumberTickUnit(1.0));
         rangeAxis.setRange(0, this.dates.size());
         plot.setDomainAxis(rangeAxis);
-        // data, valor
-        Random random = new Random();
-        // series.add(data.getLastRead().getTime(), data.getValor());
-        series.add(this.count++, random.nextGaussian() * -1);
+        series.add(this.count++, data.getValor());
         this.dataSet.addSeries("taxa de uso", this.series.toArray());
         this.plot.setDataset(this.dataSet);
     }

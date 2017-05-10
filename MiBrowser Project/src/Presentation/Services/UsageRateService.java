@@ -8,6 +8,8 @@ import Presentation.Components.Chart;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
@@ -31,10 +33,18 @@ public class UsageRateService {
             new SwingWorker<Void, Void>() {
                 @Override
                 public Void doInBackground() {
-                    // UsageRate usage =  readUsageRate();
-                    // c.addData(usage); 
-                    c.addData(null); 
-                    return null;
+                    try {
+                        UsageRate usage =  readUsageRate();
+                        c.addData(usage);
+                        // c.addData(null);
+                        return null;
+                    } catch (IOException ex) {
+                        return null;
+                    } catch (TimeoutException ex) {
+                        return null;
+                    } catch (InterruptedException ex) {
+                        return null;
+                    }
                 }
             }.execute();
         });

@@ -24,7 +24,7 @@ public class Octet {
             "1.3.6.1.2.1.2.2.1.16." + iface.getIndex() //ifOut
         };
         Date date = new Date();
-        this.time = (date.getTime() / 1000);
+        this.time = date.getTime();
         String[] results = repository.getInformation(octetOIDs);
         this.in = Long.parseLong(results[0]);
         this.out = Long.parseLong(results[1]);
