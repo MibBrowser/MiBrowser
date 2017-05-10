@@ -74,6 +74,11 @@ public class Interface {
         this.outNcast = Double.parseDouble(results[13]);
     }
 
+    @Override
+    public String toString() {
+        return this.description;
+    }
+
     public Package getPackageInformation() {
         return new Package(this);
     }
