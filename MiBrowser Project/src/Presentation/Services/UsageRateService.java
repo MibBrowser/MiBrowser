@@ -52,11 +52,13 @@ public class UsageRateService {
     public void stop() {
         if (this.timer != null) {
             this.timer.stop();
+             this.listUsageRate.clear();
         }
     }
 
     public void restart(int delay, Interface iface) {
         this.chart.clean();
+        this.listUsageRate.clear();
         this.iface = iface;
         this.timer.setDelay(delay);
         this.timer.restart();

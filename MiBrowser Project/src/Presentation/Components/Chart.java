@@ -74,10 +74,10 @@ public class Chart {
         Date date = new Date(Math.round(data.getLastRead().getTime()));
         this.dates.add(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date));
         String[] array = this.dates.toArray(new String[0]);
-        SymbolAxis rangeAxis = new SymbolAxis("Datas", array);
-        rangeAxis.setTickUnit(new NumberTickUnit(1.0));
-        rangeAxis.setRange(0, this.dates.size());
-        plot.setDomainAxis(rangeAxis);
+        SymbolAxis domainAxis = new SymbolAxis("Datas", array);
+        domainAxis.setTickUnit(new NumberTickUnit(1.0));
+        domainAxis.setRange(0, this.dates.size());
+        plot.setDomainAxis(domainAxis);
         series.add(this.count++, data.getValor());
         this.dataSet.addSeries("taxa de uso", this.series.toArray());
         this.plot.setDataset(this.dataSet);
