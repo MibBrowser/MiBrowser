@@ -39,7 +39,12 @@ public class UsageRate {
     }
 
     private double calcTotalBytesPerSecond(double totalBytes, Octet lastRead, Octet compareRead) {
-        return totalBytes / (lastRead.getTime() - compareRead.getTime());
+        double time = lastRead.getTime();
+        double time2 = compareRead.getTime();
+        // obtém o intervalo real entra as chamadas em milissegundos 
+        // e dividimos por 1000 para transformar em segundos
+        double result =  ((time - time2) / 1000);
+        return totalBytes / result;
     }
 
     private double calcTotalBitsPerSecond(double totalBytesPerSecond) {
